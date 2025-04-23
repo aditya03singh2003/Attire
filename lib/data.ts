@@ -218,7 +218,9 @@ const mensProducts = [
       "Our chino pants combine timeless style with modern comfort. The cotton-blend fabric with added stretch allows for easy movement throughout the day. The versatile design makes these pants perfect for both casual and business casual settings. Features include a flat front, side pockets, and back welt pockets.",
     price: 49.99,
     category: "Men",
-    images: Array(4).fill(mensFashionImages[6]),
+    images: Array(4).fill(
+      "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=1000&auto=format&fit=crop",
+    ),
     rating: 4.5,
     reviews: 87,
     sizes: ["30", "32", "34", "36", "38"],
@@ -254,7 +256,9 @@ const mensProducts = [
       "Make a statement with our graphic print t-shirt. The eye-catching design is printed on premium cotton fabric for comfort and durability. The regular fit provides a relaxed feel, while the reinforced neckline ensures the shirt maintains its shape wash after wash. Perfect for casual outings or adding personality to your everyday style.",
     price: 24.99,
     category: "Men",
-    images: Array(4).fill(mensFashionImages[8]),
+    images: Array(4).fill(
+      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000&auto=format&fit=crop",
+    ),
     rating: 4.2,
     reviews: 41,
     sizes: ["S", "M", "L", "XL"],

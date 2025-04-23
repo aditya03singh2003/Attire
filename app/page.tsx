@@ -8,6 +8,7 @@ import { ArrowRight, ShoppingBag, Star, TrendingUp, Sparkles } from "lucide-reac
 import { featuredProducts, categories, newArrivals } from "@/lib/data"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import FuturisticBackground from "@/components/futuristic-background"
 
 export default function Home() {
   return (
@@ -50,15 +51,15 @@ export default function Home() {
       </section>
 
       {/* New Arrivals Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+      <FuturisticBackground variant="gradient" className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-2 mb-2">
-              <Sparkles className="h-5 w-5 text-purple-500" />
-              <span className="text-sm font-medium uppercase tracking-wider text-purple-500">Just Arrived</span>
+              <Sparkles className="h-5 w-5 text-purple-300" />
+              <span className="text-sm font-medium uppercase tracking-wider text-purple-300">Just Arrived</span>
             </div>
-            <h2 className="text-3xl font-bold tracking-tight mb-4">New Arrivals</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold tracking-tight mb-4 text-white">New Arrivals</h2>
+            <p className="text-white/70 max-w-2xl mx-auto">
               Be the first to discover our latest additions and stay ahead of the trends
             </p>
           </div>
@@ -72,7 +73,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                <div className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-white/10">
                   <div className="relative aspect-[3/4]">
                     <Image
                       src={product.images[0] || "/placeholder.svg"}
@@ -85,11 +86,13 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="font-bold text-lg mb-2">{product.name}</h3>
-                    <p className="text-muted-foreground mb-4 line-clamp-2">{product.description}</p>
+                    <h3 className="font-bold text-lg mb-2 text-white">{product.name}</h3>
+                    <p className="text-white/70 mb-4 line-clamp-2">{product.description}</p>
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-lg">${(product.salePrice || product.price).toFixed(2)}</span>
-                      <Button asChild size="sm">
+                      <span className="font-bold text-lg text-white">
+                        ${(product.salePrice || product.price).toFixed(2)}
+                      </span>
+                      <Button asChild size="sm" className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white">
                         <Link href={`/products/${product.id}`}>View Details</Link>
                       </Button>
                     </div>
@@ -100,7 +103,11 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12">
-            <Button asChild size="lg">
+            <Button
+              asChild
+              size="lg"
+              className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/20"
+            >
               <Link href="/products">
                 View All New Arrivals
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -108,7 +115,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
-      </section>
+      </FuturisticBackground>
 
       {/* Categories Section */}
       <section className="py-20">
@@ -159,22 +166,22 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+      <FuturisticBackground variant="waves" className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: <ShoppingBag className="h-10 w-10 text-blue-500" />,
+                icon: <ShoppingBag className="h-10 w-10 text-blue-300" />,
                 title: "Free Shipping",
                 description: "Free shipping on all orders over $50",
               },
               {
-                icon: <Star className="h-10 w-10 text-purple-500" />,
+                icon: <Star className="h-10 w-10 text-purple-300" />,
                 title: "Premium Quality",
                 description: "Handcrafted with the finest materials",
               },
               {
-                icon: <TrendingUp className="h-10 w-10 text-pink-500" />,
+                icon: <TrendingUp className="h-10 w-10 text-pink-300" />,
                 title: "Latest Trends",
                 description: "Stay ahead with our seasonal collections",
               },
@@ -185,25 +192,23 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="flex flex-col items-center text-center p-8 rounded-xl border bg-white dark:bg-gray-800 hover:shadow-xl transition-all"
+                className="flex flex-col items-center text-center p-8 rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all"
               >
-                <div className="mb-4 p-4 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <div className="mb-4 p-4 rounded-full bg-white/10">{feature.icon}</div>
+                <h3 className="text-xl font-bold mb-2 text-white">{feature.title}</h3>
+                <p className="text-white/70">{feature.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </FuturisticBackground>
 
       {/* Newsletter Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+      <FuturisticBackground variant="particles" className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <Sparkles className="h-8 w-8 mx-auto mb-4 text-yellow-300" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Join Our Newsletter</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Join Our Newsletter</h2>
             <p className="text-white/80 mb-8">
               Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.
             </p>
@@ -214,13 +219,13 @@ export default function Home() {
                 className="flex-1 px-4 py-3 rounded-md border border-white/20 bg-white/10 backdrop-blur-sm placeholder:text-white/60 text-white focus:outline-none focus:ring-2 focus:ring-white"
                 required
               />
-              <Button size="lg" className="bg-white text-purple-600 hover:bg-white/90">
+              <Button size="lg" className="bg-white text-indigo-900 hover:bg-white/90">
                 Subscribe
               </Button>
             </form>
           </div>
         </div>
-      </section>
+      </FuturisticBackground>
     </div>
   )
 }

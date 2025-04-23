@@ -1,33 +1,31 @@
 import Link from "next/link"
-import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react"
+import { Facebook, Instagram, Twitter, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function Footer() {
   return (
     <footer className="bg-gray-950 text-gray-200">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 py-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">ATTIRE</h3>
-            <p className="text-gray-400 mb-4">
-              Premium clothing for the modern individual. Discover the latest trends and timeless classics.
-            </p>
-            <div className="flex space-x-4">
-              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
-                <Facebook size={20} />
+            <h3 className="text-xl font-bold mb-3">ATTIRE</h3>
+            <p className="text-gray-400 text-sm mb-3">Premium clothing for the modern individual.</p>
+            <div className="flex space-x-3">
+              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white h-8 w-8">
+                <Facebook size={18} />
                 <span className="sr-only">Facebook</span>
               </Button>
-              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
-                <Instagram size={20} />
+              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white h-8 w-8">
+                <Instagram size={18} />
                 <span className="sr-only">Instagram</span>
               </Button>
-              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
-                <Twitter size={20} />
+              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white h-8 w-8">
+                <Twitter size={18} />
                 <span className="sr-only">Twitter</span>
               </Button>
-              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
-                <Youtube size={20} />
+              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white h-8 w-8">
+                <Youtube size={18} />
                 <span className="sr-only">YouTube</span>
               </Button>
             </div>
@@ -35,8 +33,8 @@ export default function Footer() {
 
           {/* Shop Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Shop</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold mb-3">Shop</h3>
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/products" className="text-gray-400 hover:text-white transition-colors">
                   All Products
@@ -57,18 +55,13 @@ export default function Footer() {
                   Accessories
                 </Link>
               </li>
-              <li>
-                <Link href="/categories/sale" className="text-gray-400 hover:text-white transition-colors">
-                  Sale
-                </Link>
-              </li>
             </ul>
           </div>
 
           {/* Company Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold mb-3">Company</h3>
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
                   About Us
@@ -77,11 +70,6 @@ export default function Footer() {
               <li>
                 <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
                   Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/careers" className="text-gray-400 hover:text-white transition-colors">
-                  Careers
                 </Link>
               </li>
               <li>
@@ -97,38 +85,33 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Newsletter */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-2 text-gray-400 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-400">123 Fashion Street, Design District, New York, NY 10001</span>
-              </li>
-              <li className="flex items-center">
-                <Phone className="h-5 w-5 mr-2 text-gray-400" />
-                <span className="text-gray-400">+1 (555) 123-4567</span>
-              </li>
-              <li className="flex items-center">
-                <Mail className="h-5 w-5 mr-2 text-gray-400" />
-                <span className="text-gray-400">support@attire.com</span>
-              </li>
-            </ul>
+            <h3 className="text-sm font-semibold mb-3">Newsletter</h3>
+            <p className="text-gray-400 text-sm mb-3">Subscribe for updates on new arrivals and offers.</p>
+            <div className="flex">
+              <input
+                type="email"
+                placeholder="Your email"
+                className="bg-gray-800 text-white px-3 py-1 text-sm rounded-l-md focus:outline-none w-full"
+              />
+              <Button size="sm" className="rounded-l-none">
+                Subscribe
+              </Button>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} Attire. All rights reserved.
-          </p>
-          <div className="flex space-x-6">
-            <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
+        <div className="border-t border-gray-800 mt-6 pt-4 flex flex-col md:flex-row justify-between items-center text-sm">
+          <p className="text-gray-400 mb-2 md:mb-0">&copy; {new Date().getFullYear()} Attire. All rights reserved.</p>
+          <div className="flex space-x-4">
+            <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
               Terms
             </Link>
-            <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
               Privacy
             </Link>
-            <Link href="/cookies" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link href="/cookies" className="text-gray-400 hover:text-white transition-colors">
               Cookies
             </Link>
           </div>

@@ -59,9 +59,9 @@
     "vaul": "^0.9.6",
     "zod": "^3.24.1",
     "@emotion/is-prop-valid": "latest",
-    "@clerk/nextjs": "latest",
     "framer-motion": "latest",
-    "canvas-confetti": "latest"
+    "canvas-confetti": "latest",
+    "@clerk/nextjs": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

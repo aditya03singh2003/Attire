@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, notFound } from "next/navigation"
-import { Star, Truck, ArrowLeft, Check, ShoppingBag } from "lucide-react"
+import { useParams, notFound, useRouter } from "next/navigation"
+import { Star, Truck, ArrowLeft, Check, ShoppingBag, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -12,23 +12,49 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { useCart } from "@/components/cart-provider"
 import { products } from "@/lib/data"
+import { motion } from "framer-motion"
+import { useToast } from "@/hooks/use-toast"
+import ProductCard from "@/components/product-card"
 
 export default function ProductPage() {
   const params = useParams()
+  const router = useRouter()
+  const { toast } = useToast()
   const { addToCart } = useCart()
-
-  const product = products.find((p) => p.id === params.id)
-
-  if (!product) {
-    notFound()
-  }
-
+  const [product, setProduct] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
   const [selectedImage, setSelectedImage] = useState(0)
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  const [selectedColor, setSelectedColor] = useState("")
+  const [selectedSize, setSelectedSize] = useState("")
   const [quantity, setQuantity] = useState(1)
+  const [isWishlisted, setIsWishlisted] = useState(false)
+
+  useEffect(() => {
+    try {
+      const id = params?.id as string
+      const foundProduct = products.find((p) => p.id === id)
+
+      if (!foundProduct) {
+        setError(true)
+        setLoading(false)
+        return
+      }
+
+      setProduct(foundProduct)
+      setSelectedColor(foundProduct.colors[0])
+      setSelectedSize(foundProduct.sizes[0])
+      setLoading(false)
+    } catch (err) {
+      console.error("Error loading product:", err)
+      setError(true)
+      setLoading(false)
+    }
+  }, [params])
 
   const handleAddToCart = () => {
+    if (!product) return
+
     addToCart({
       id: product.id,
       name: product.name,
@@ -38,6 +64,41 @@ export default function ProductPage() {
       selectedColor,
       selectedSize,
     })
+
+    toast({
+      title: "Added to cart",
+      description: `${product.name} has been added to your cart.`,
+    })
+  }
+
+  const toggleWishlist = () => {
+    setIsWishlisted(!isWishlisted)
+    toast({
+      title: isWishlisted ? "Removed from wishlist" : "Added to wishlist",
+      description: isWishlisted
+        ? `${product?.name} has been removed from your wishlist.`
+        : `${product?.name} has been added to your wishlist.`,
+    })
+  }
+
+  if (error) {
+    return notFound()
+  }
+
+  if (loading || !product) {
+    return (
+      <div className="container mx-auto py-12 px-4">
+        <div className="animate-pulse grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="aspect-square bg-gray-200 rounded-lg"></div>
+          <div className="space-y-4">
+            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -49,7 +110,12 @@ export default function ProductPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Product Images */}
-        <div className="space-y-4">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-4"
+        >
           <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
             <Image
               src={product.images[selectedImage] || "/placeholder.svg"}
@@ -58,14 +124,25 @@ export default function ProductPage() {
               className="object-cover"
               priority
             />
+            <div className="absolute top-4 right-4 flex flex-col gap-2">
+              <Button
+                size="icon"
+                variant="secondary"
+                className="rounded-full h-10 w-10 bg-white/80 backdrop-blur-sm hover:bg-white"
+                onClick={toggleWishlist}
+              >
+                <Heart className={`h-5 w-5 ${isWishlisted ? "fill-red-500 text-red-500" : ""}`} />
+                <span className="sr-only">Add to wishlist</span>
+              </Button>
+            </div>
           </div>
 
           <div className="grid grid-cols-4 gap-2">
-            {product.images.map((image, index) => (
+            {product.images.map((image: string, index: number) => (
               <button
                 key={index}
-                className={`relative aspect-square overflow-hidden rounded-md ${
-                  selectedImage === index ? "ring-2 ring-primary" : "ring-1 ring-border"
+                className={`relative aspect-square overflow-hidden rounded-md transition-all ${
+                  selectedImage === index ? "ring-2 ring-primary" : "ring-1 ring-border hover:ring-primary/50"
                 }`}
                 onClick={() => setSelectedImage(index)}
               >
@@ -78,11 +155,29 @@ export default function ProductPage() {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Product Details */}
-        <div className="space-y-6">
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-6"
+        >
           <div>
+            <div className="flex items-center gap-2 mb-2">
+              {product.new && (
+                <span className="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-700 rounded-full">New</span>
+              )}
+              {product.sale && (
+                <span className="px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">Sale</span>
+              )}
+              {product.featured && (
+                <span className="px-2 py-1 text-xs font-semibold bg-purple-100 text-purple-700 rounded-full">
+                  Featured
+                </span>
+              )}
+            </div>
             <h1 className="text-3xl font-bold">{product.name}</h1>
             <div className="flex items-center gap-2 mt-2">
               <div className="flex">
@@ -125,7 +220,7 @@ export default function ProductPage() {
               Color: <span className="capitalize">{selectedColor}</span>
             </h3>
             <div className="flex flex-wrap gap-2">
-              {product.colors.map((color) => (
+              {product.colors.map((color: string) => (
                 <button
                   key={color}
                   className={`relative h-10 w-10 rounded-full ${
@@ -182,7 +277,7 @@ export default function ProductPage() {
               <button className="text-sm text-primary hover:underline">Size Guide</button>
             </div>
             <RadioGroup value={selectedSize} onValueChange={setSelectedSize} className="grid grid-cols-6 gap-2">
-              {product.sizes.map((size) => (
+              {product.sizes.map((size: string) => (
                 <div key={size}>
                   <RadioGroupItem value={size} id={`size-${size}`} className="peer sr-only" />
                   <Label
@@ -249,11 +344,11 @@ export default function ProductPage() {
                 </li>
                 <li>
                   <span className="font-medium text-foreground">Colors:</span>{" "}
-                  {product.colors.map((c) => c.charAt(0).toUpperCase() + c.slice(1)).join(", ")}
+                  {product.colors.map((c: string) => c.charAt(0).toUpperCase() + c.slice(1)).join(", ")}
                 </li>
                 <li>
                   <span className="font-medium text-foreground">Sizes:</span>{" "}
-                  {product.sizes.map((s) => s.toUpperCase()).join(", ")}
+                  {product.sizes.map((s: string) => s.toUpperCase()).join(", ")}
                 </li>
                 <li>
                   <span className="font-medium text-foreground">Product ID:</span> {product.id}
@@ -269,6 +364,26 @@ export default function ProductPage() {
               </ul>
             </TabsContent>
           </Tabs>
+        </motion.div>
+      </div>
+
+      {/* Related Products */}
+      <div className="mt-16">
+        <h2 className="text-2xl font-bold mb-6">You May Also Like</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products
+            .filter((p) => p.category === product.category && p.id !== product.id)
+            .slice(0, 4)
+            .map((relatedProduct, index) => (
+              <motion.div
+                key={relatedProduct.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+              >
+                <ProductCard product={relatedProduct} />
+              </motion.div>
+            ))}
         </div>
       </div>
     </div>

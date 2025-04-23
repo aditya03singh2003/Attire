@@ -22,8 +22,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Use the publishable key directly to avoid environment variable issues
+  const publishableKey = "pk_test_d2FybS1sb25naG9ybi01NC5jbGVyay5hY2NvdW50cy5kZXYk"
+
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={publishableKey}>
       <html lang="en">
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="light">
